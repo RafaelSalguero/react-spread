@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import * as React from "react";
 import { FormErrors } from "./validation";
 import { Spread } from "./spread";
 
@@ -9,9 +9,9 @@ interface FormProps<T> {
     errors?: FormErrors<T>;
 }
 
-export function Form<T>(props: PropsWithChildren<FormProps<T>>)
-export function Form<TValue, TExtraProps>(props: PropsWithChildren<FormProps<TValue> & TExtraProps>)
-export function Form<T>(props: PropsWithChildren<FormProps<T>>) {
+export function Form<T>(props: React.PropsWithChildren<FormProps<T>>)
+export function Form<TValue, TExtraProps>(props: React.PropsWithChildren<FormProps<TValue> & TExtraProps>)
+export function Form<T>(props: React.PropsWithChildren<FormProps<T>>) {
     return <FormComp  {...props} />
 }
 
