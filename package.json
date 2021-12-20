@@ -1,0 +1,29 @@
+{
+  "name": "react-spread",
+  "version": "1.0.0",
+  "description": "Spread props to children components",
+  "main": "dist/commonjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "buildCommonJs": "tsc -m commonjs -outDir dist/commonjs -d false",
+    "buildES6": "tsc -d -declarationDir dist/types",
+    "build": "npm run buildES6 && npm run buildCommonJs",
+    "test": "jest",
+    "prepublishOnly": "npm run build",
+    "tsc": "tsc --noemit"
+  },
+  "author": "Rafael Salguero",
+  "license": "MIT",
+  "dependencies": {
+    "react": ">=16"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/react": ">=16",
+    "jest": "^27.4.5",
+    "jest-cli": "^27.4.5",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.5.4"
+  }
+}
