@@ -1,6 +1,6 @@
 {
   "name": "react-spread",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Spread props to children components",
   "main": "dist/commonjs/index.js",
   "module": "dist/esm/index.js",
