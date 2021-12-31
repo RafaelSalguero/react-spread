@@ -4,12 +4,12 @@ import { useThunk } from "./useThunk";
 
 type BaseProps<TValue> = {
     value?: TValue;
-    onChange?: (x: TValue) => void;
+    onChange?: Dispatch<SetStateAction<TValue>>;
 }
 
 type OnChangeSpread<TValue> = {
     onChange: {
-        [K in keyof TValue]: Dispatch<SetStateAction<TValue[K]>>;
+        [K in keyof TValue]: (value: TValue[K]) => void;
     }
 }
 
@@ -22,7 +22,7 @@ type OnChangeSpread<TValue> = {
  *  age: 20
  * }
  * 
- * const bind = useSpread({ value, onChange });
+ * const bind = useForm({ value, onChange });
  * 
  * <Input {...bind("name")} />
  * <Input {...bind("age")} />
