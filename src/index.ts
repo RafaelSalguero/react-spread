@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { Bind, SpreadProps, useBind } from "./useBind";
 import { useThunk } from "./useThunk";
 
@@ -9,7 +9,7 @@ type BaseProps<TValue> = {
 
 type OnChangeSpread<TValue> = {
     onChange: {
-        [K in keyof TValue]: (value: TValue[K]) => void;
+        [K in keyof TValue]: Dispatch<SetStateAction<TValue[K]>>;
     }
 }
 
@@ -22,7 +22,7 @@ type OnChangeSpread<TValue> = {
  *  age: 20
  * }
  * 
- * const bind = useForm({ value, onChange });
+ * const bind = useSpread({ value, onChange });
  * 
  * <Input {...bind("name")} />
  * <Input {...bind("age")} />
