@@ -2,7 +2,7 @@
 
 The *tiniest* package to do forms in React.
 
-- ✅ Works with React 16 and 17 
+- ✅ Works with React 16 and 17 both DOM and Native
 - ✅ Perfectly typed
 - ✅ Packaged both for ES6 + CommonJS 
 - ✅ Functional, controlled style
