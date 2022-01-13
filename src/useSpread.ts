@@ -24,7 +24,7 @@ type OnChangeSpread<TValue> = {
  *  age: 20
  * }
  * 
- * const bind = useForm({ value, onChange });
+ * const bind = useSpread({ value, onChange });
  * 
  * <Input {...bind("name")} />
  * <Input {...bind("age")} />

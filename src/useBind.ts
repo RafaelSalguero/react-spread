@@ -17,20 +17,18 @@ export type SpreadProps<TProps, TFields extends Key> = {
     } | SpreadField<TProps[K], TFields>
 }
 
-type ExtractExtraField<T> =
+type ExtractFieldFunc<T> =
     T extends (field: any, ...args: infer P) => any ? (...args: P) => ReturnType<T> :
     T;
 
-type ExtraExtraProps<T> = T extends {} ? {
-    [K in keyof T]: ExtractExtraField<T[K]>
-} : {};
-
 type ExtractProps<TSpread, TField extends keyof TSpread[any]> = {
     [K in keyof TSpread]:
-    TSpread[K] extends Func ? ExtractExtraField<TSpread[K]> :
+    TSpread[K] extends Func ? ExtractFieldFunc<TSpread[K]> :
     TSpread[K] extends object ? TSpread[K][TField] :
-    ExtractExtraField<TSpread[K]>
+    ExtractFieldFunc<TSpread[K]>
 }
+
+type ExtractExtraProps<TExtra> = TExtra extends undefined ? {} : TExtra;
 
 type ExtractFields<T> = T extends {
     [K in keyof T]?:
@@ -41,7 +39,7 @@ type ExtractFields<T> = T extends {
 } ? P : never;
 
 export type Bind<TSpread extends SpreadProps<any, any>, TExtra> =
-    <TField extends ExtractFields<TSpread>>(field: TField) => ExtractProps<TSpread, TField> & ExtraExtraProps<TExtra>;
+    <TField extends ExtractFields<TSpread>>(field: TField) => ExtractProps<TSpread, TField> & ExtractExtraProps<TExtra>;
 
 /**
  * Retuns a function that spread props to child components
@@ -51,7 +49,7 @@ export type Bind<TSpread extends SpreadProps<any, any>, TExtra> =
  * @param extra An object with the shape of { [prop]: value }, holding the props to spread to all fields
  * @returns 
  */
-export function useBind<TSpread extends SpreadProps<any, any>, TExtra = undefined>(spread: TSpread, extra?: TExtra): Bind<TSpread, TExtra> {
+export function useBind<TSpread extends SpreadProps<any, any>, TExtra extends ({} | undefined) = undefined>(spread: TSpread, extra?: TExtra): Bind<TSpread, TExtra> {
     const cacheGet = useCache();
     const mapValue = (value: any, field: string | number | symbol, prop: string) => {
         if (typeof (value) != "function") {
@@ -61,17 +59,13 @@ export function useBind<TSpread extends SpreadProps<any, any>, TExtra = undefine
         return cacheGet(`${field.toString()}.${prop}`, () => (...args: any[]) => value(field, ...args), [value]);
     }
     return function bind(field) {
-        const extraProps = mapObject(extra || {},
-            (value, prop) =>
-                mapValue(value?.[prop as any], field, prop as string)
-        );
-
         const spreadProps = mapObject(spread,
             (value, prop) =>
                 typeof value == "object" ? value[field] :
-                    mapValue(value?.[prop as any], field, prop as string)
+                    mapValue(value, field, prop as string)
         );
 
-        return { ...extraProps, spreadProps } as any;
+
+        return { ...(extra ?? {}), ...spreadProps } as any;
     }
 }
